@@ -2,6 +2,7 @@
 #include <vector>
 #include <functional>
 #include <string>
+#include <cmath>
 
 #include "Data.hh"
 
@@ -68,12 +69,52 @@ int main() {
   cout << "******************************************************" << endl;
   // create an object which holds data of experiment A
   Data datA("exp_A");
+  Data datB("exp_B");
+  Data datC("exp_C");
+  Data datD("exp_D");
 
   // here is the data from experiment A
   cout << "bin 27: from " << datA.binLow(27) << " to " << datA.binHigh(27)
        << endl;
-  cout << "measurement of experiment A in bin 27: " << datA.measurement(27)
+  cout << "bin 27: from " << datB.binLow(27) << " to " << datB.binHigh(27)
+       << endl;
+  cout << "bin 27: from " << datC.binLow(27) << " to " << datC.binHigh(27)
+       << endl;
+  cout << "bin 27: from " << datD.binLow(27) << " to " << datD.binHigh(27)
        << endl;
 
+  cout << "measurement of experiment A in bin 27: " << datA.measurement(27)
+       << endl;
+  cout << "measurement of experiment B in bin 27: " << datB.measurement(27)
+       << endl;
+  cout << "measurement of experiment C in bin 27: " << datC.measurement(27)
+       << endl;
+  cout << "measurement of experiment D in bin 27: " << datD.measurement(27)
+       << endl;
+  
+  cout << "Comparison for bin 27: "
+       << endl;
+  cout << "Delta y: " << abs(datA.measurement(27)- datB.measurement(27)) 
+       << endl;
+  cout << "n*Sigma y: " << 2*sqrt(pow(datA.error(27),2)+pow(datB.error(27),2)) 
+       << endl;
+       ;
+  cout << "summe A,B " << (datA+datB).measurement(27)
+       << endl;
+
+  vector<Data> dat = {datA, datB, datC, datD};
+  vector<std::string> set = {"A", "B","C", "D"};
+  cout << "check compatability: " << endl;
+  for (int j = 0; j <4; j++){
+    for (int l = j+1; l < 4; l ++){
+      cout << set[j] << set[l] << " " << dat[j].checkCompatibility(dat[l], 3) << endl;
+    }
+  }
+  for (int j = 0; j <4; j++){
+    cout << dat[j].chisq_n() << endl;
+  }
+
+  cout << "chisq: " << (datA+datB+datC+datD).chisq_n()
+       << endl;
   return 0;
 }
