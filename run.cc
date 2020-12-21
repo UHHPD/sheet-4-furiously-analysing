@@ -98,6 +98,23 @@ int main() {
        << endl;
   cout << "n*Sigma y: " << 2*sqrt(pow(datA.error(27),2)+pow(datB.error(27),2)) 
        << endl;
+       ;
+  cout << "summe A,B " << (datA+datB).measurement(27)
+       << endl;
 
+  vector<Data> dat = {datA, datB, datC, datD};
+  vector<std::string> set = {"A", "B","C", "D"};
+  cout << "check compatability: " << endl;
+  for (int j = 0; j <4; j++){
+    for (int l = j+1; l < 4; l ++){
+      cout << set[j] << set[l] << " " << dat[j].checkCompatibility(dat[l], 3) << endl;
+    }
+  }
+  for (int j = 0; j <4; j++){
+    cout << dat[j].chisq_n() << endl;
+  }
+
+  cout << "chisq: " << (datA+datB+datC+datD).chisq_n()
+       << endl;
   return 0;
 }
