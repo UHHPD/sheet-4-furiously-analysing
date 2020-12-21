@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cassert>
 #include <stdexcept>
+#include <cmath>
 
 using namespace std;
 
@@ -32,6 +33,13 @@ Data::Data(const std::string& filename) {
     m_data.push_back(entries);
   }
 
+  //errors
+  for (int i = 0; i < size; ++i) {
+    double Sentries;
+    file >> Sentries;
+    m_errors.push_back(Sentries);
+  }
+
   // done! close the file
   file.close();
 
@@ -39,3 +47,13 @@ Data::Data(const std::string& filename) {
 };
 
 void Data::assertSizes() { assert(m_data.size() + 1 == m_bins.size()); }
+
+int Data :: checkCompatibility ( const Data & in , int n ){
+  int k = 0;
+  for (int i = 0; i < size(); ++i){
+    if (abs(measurement(i)- in.measurement(i)) > n*sqrt(pow(error(i),2)+pow(in.error(i),2))){
+     k++;
+     }
+  }
+  return n;
+}
